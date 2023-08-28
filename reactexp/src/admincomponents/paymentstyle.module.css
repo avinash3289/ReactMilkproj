@@ -1,0 +1,120 @@
+
+.srch{
+    position: absolute;
+    margin-left:400px;
+    margin-top:30px;
+}
+.sh{
+  width:350px; 
+}
+.sh input{
+   width: 200px;
+   height:33px;
+   border-radius:8px;
+   border-top-right-radius:0px;
+   border-bottom-right-radius:0px;
+   padding: 4px;
+   background: transparent;
+   color: aliceblue;
+   font-weight: 700;
+   font-size: 16px;
+   outline: none;
+}
+.bs{
+   background-color: orangered;
+   padding:8px 8px;
+   border-radius: 4px;
+   color: white;
+   font-weight: 700;
+   margin-top: -1px;
+}
+.bs:hover{
+   background-color: rgb(215, 34, 6);
+}
+.container{
+    transform: translate(30%,40%);
+    width:450px;
+    height:max-content;
+    border:2px solid gainsboro;
+    position:relative;
+    box-shadow:0px 2px 3px 2px #b9ddfd;
+}
+.form_group{
+    margin:3px;
+    padding-top:8px;
+    overflow-x: hidden;
+}
+.btn{
+    margin-top:5px;
+    padding:5px;
+    margin-left:78px;
+    font-weight: bold;
+}
+ 
+.form_label{
+    color:#620a0a;
+    padding:3px;
+    font-weight: bold;
+}
+.form_group input{
+    height:25px;
+    font-weight: bold;
+    padding:5px;
+    width: 97%;
+    border-radius:8px;
+    border:none;
+    outline:none;
+}
+.forms{
+    padding:3px;
+    background-color: bisque;
+}
+.forms span{
+    color:rgb(0, 164, 229);
+    font-weight:900;
+    font-size:27px;
+    margin-left:120px;
+
+}
+.btn{
+    width:auto;
+    height:34px;
+    background-color: rgb(103, 103, 161);
+    color: aliceblue;
+    font-size: 16px;
+    padding:5px 10px;
+    border-radius:5px;
+    margin:5px 140px;
+    cursor: pointer;
+}
+ 
+.pay {
+    padding: 0px 15px;
+    height: 250px;
+    width:250px;
+    position: absolute;
+    margin:-150px 650px;
+}
+
+.pay table {
+    border:3px solid rgb(220, 220, 220);
+    width: max-content;
+    height: max-content;
+    box-shadow:0px 2px 3px 2px #b9ddfd;
+}
+
+.pay table tr,
+td,
+th {
+     color:black;
+    padding: 8px;
+}
+.close {
+    margin-left: 240px;
+    border:none;
+    outline:none;
+}
+.close:hover{
+    background-color:#b9ddfd;
+    color:aliceblue;
+}
