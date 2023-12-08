@@ -36,6 +36,10 @@ function Profile(){
         alert("profile not updated")
        }
     }
+    let cancel=(e)=>{
+          e.preventDefault();
+          
+    }
     return <>
      
     
@@ -65,7 +69,7 @@ function Profile(){
                 <button className={style.update } onClick={updatepro} >Update</button>
             </div>
             <div className= {style.form_group}>
-                <button  className={style.cancel}>Cancel</button>
+                <button  className={style.cancel} onClick={cancel}>Cancel</button>
             </div>
         </div>
         </form>

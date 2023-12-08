@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import './login.css';
 import { logindata } from "../services/service";
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ function Login(){
       e.preventDefault();
       console.log(formdata.username,formdata.password);
       let res=await logindata(formdata)
+      console.log(res)
       if(res.data.success==true){
         alert("login successfull");
         sessionStorage.setItem("uname",res.data.name);

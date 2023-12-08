@@ -16,6 +16,13 @@ import Ratechart from './admincomponents/ratechart';
 import Billgeneration from './admincomponents/Billgeneration';
 import Payment from './admincomponents/payment';
 import Profile from './admincomponents/profile';
+import Sellerdash from './sellercomponent/sellerdash';
+import Home3 from './sellercomponent/home3';
+import Milkrecords from './sellercomponent/milkrecords';
+import Paymentsinfo from './sellercomponent/paymentinfo';
+import Sellerprofile from './sellercomponent/sellerprofile';
+
+
 function App() {
   return (
     <>
@@ -41,6 +48,13 @@ function App() {
              <Route path="billgeneration" element={<Billgeneration/>}/>
              <Route path="payment" element={<Payment/>}/>
              <Route path="profile" element={<Profile/>}/>
+           </Route>
+           <Route path='sellerdash' element={<Sellerdash/>}>
+            <Route path="" element={<Home3/>}/>
+            <Route path="home3" element={<Home3/>}/>
+            <Route path="milkrecords" element={<Milkrecords/>}/>
+            <Route path="paymentinfo" element={<Paymentsinfo/>}/>    
+            <Route path="sellerprofile" element={<Sellerprofile/>}/>                  
            </Route>
 
         </Routes>

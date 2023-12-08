@@ -6,7 +6,7 @@ function Dashbaord(){
     const admin=sessionStorage.getItem("uname");
     let change=()=>{
          if(confirm(`Logout ${admin} ?`))
-        navigate("/navbar/home")
+         navigate("/navbar/home") 
     }
 
      

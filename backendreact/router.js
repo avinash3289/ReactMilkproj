@@ -1,6 +1,47 @@
 const express=require('express')
+const path=require('path')
+const multer = require('multer');
 const router=express.Router();
-const db=require('./database/db')
+const storage =multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,'public/images')
+    },
+    filename:(req,file,cb)=>{
+        cb(null,file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+}); 
+
+const upload = multer({ storage:storage });
+
+const db=require('./database/db');
+router.post('/upload', upload.single('photo'), (req, res) => {
+    console.log(req.file);
+    const photoData = req.file.filename;
+    const sql = 'INSERT INTO photos (images) VALUES (?)';
+    db.query(sql, [photoData], (err,result) => {
+      if (err) {
+        console.error('Error inserting photo into MySQL:', err);
+        res.status(500).json({ error: 'Internal server error' });
+      } else {
+        console.log('Photo uploaded successfully');
+        res.status(200).json({ message: 'Photo uploaded successfully' });
+      }
+    });
+  });
+
+  router.get('/getImages', (req, res) => {
+    // Retrieve image data from the database
+    const sql = 'SELECT * FROM photos'; // Make sure the table name and column name match your database schema
+    db.query(sql, (err, results) => {
+      if (err) {
+        console.error('Error retrieving images from MySQL:', err);
+        res.status(500).json({ error: 'Internal server error' });
+      } else {
+       
+        res.status(200).json({ img:results });
+      }
+    });
+  });
 router.get("/getmilk/:id", function (req, res) {
     const username=req.url.split('/')[2]
     db.query("SELECT * FROM milkcollection where username=?",[username], function (err, result) {
@@ -13,9 +54,22 @@ router.get("/getmilk/:id", function (req, res) {
         else {
             res.send({ success: false, message: "no data found!!!.." });
         }
+    });
+});
+router.get("/milkinfo/:id", function (req, res) {
+    const username=req.url.split('/')[2]
+    db.query("SELECT * FROM milkcollection where usercode=?",[username], function (err, result) {
+        if (err) {
+            res.send({ success: false, message: "error" });
+        }
+        else if (result.length>0) {
+            res.send({ results: result, message: "success" });
+        }
+        else {
+            res.send({ success: false, message: "no data found!!!.." });
+        }
 
     });
-
 });
 router.post("/ratecharts", function (req, res) {
     const { fat, snf1, snf2, snf3, snf4 } = req.body;
@@ -101,6 +155,20 @@ router.post("/payment/:uid",function(req,res){
     })
 })
 router.get("/getpay/:payid",(req,res)=>{
+    let usercode=req.params.payid; 
+    console.log(usercode)
+   db.query("select * from payments where usercode=?",[usercode],(err,result12)=>{
+       if (err) throw err;
+       else if (result12.length>0){
+           res.send({submit:true,paydetails:result12});
+       }
+       else{
+           res.send({submit:false,message:"no such user found"});
+       }
+   });
+     
+});
+router.get("/getpayinfo/:payid",(req,res)=>{
     let usercode=req.params.payid; 
     console.log(usercode)
    db.query("select * from payments where usercode=?",[usercode],(err,result12)=>{
@@ -235,6 +303,7 @@ router.post("/stores", function (req, res) {
         
         else if(result.length>0){
             const name=result[0]["name"];
+            
             res.send({ success:true,name:name, message: "success" });
         }
         else{
@@ -293,9 +362,9 @@ router.post("/milkcollection", (req, res) => {
     })
 
 });
+
 router.get("/getvalues/:id",function(req,res){
     const username=req.url.split('/')[2];
-    
     db.query("select count(*) from sellerregistration where username=? ",[username],(err,res1)=>{
         if(err){
             res.send({message:err});
@@ -331,8 +400,71 @@ router.get("/getvalues/:id",function(req,res){
         }
     });
 });
+router.get("/users",(req,res)=>{
+    db.query("select * from users",(err,resa)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            res.send({data:resa})
+        }
+    })
+})
+router.post("/seller", function (req, res) {
+    const { usercode, password } =req.body;
+    console.log(req.body)
+    db.query("select * from sellerregistration where usercode=? and password=?", [usercode, password], (err, results) => {
+        if (err) {
+            res.send({ message: err, });
+        }
+        else if (results.length>0) {
+            const name=results[0]["name"];
+            const usercode=results[0]["usercode"];
+            res.send({ submit:true, data:results,name ,usercode});
+        }
+        else {
+            res.send({ submit: false });
+        }
+    });
+});
+router.get("/getall/:id",function(req,res){
+    const usercode=req.url.split('/')[2];
+    console.log(usercode)
+     db.query("select count(*),sum(amount),sum(quantity) from milkcollection where usercode=? ",[usercode],(err,result13)=>{
+           if(err) throw err;
+            else{
+                db.query("select sum(amount) from payments where usercode=?",[usercode],(err,result14)=>{
+                    if (err) throw err;
+                    else {
+                        const rm=result13[0]['sum(amount)']-result14[0]['sum(amount)'];
+                        res.send({submit:true,
+                            days:result13[0]['count(*)'],
+                            amount:result14[0]['sum(amount)'],
+                            remain:rm,
+                            liters:result13[0]['sum(quantity)']
 
-
-
+                        })
+                    } 
+                })
+            }
+     });
+});
+router.get("/getsellerprof/:code", function (req, res) {
+    let usercode=req.url.split('/')[2];
+    console.log(req.url)    
+        db.query("SELECT * FROM  sellerregistration where usercode=?",[usercode], function (err, result) {
+            if (err){
+                res.send({ success: false, message: "error" });
+            }
+            else if (result.length>0) { 
+                res.send({ data1: result,});
+            }
+            else {
+                res.send({ success: false, message: "no data found!!!.." });
+            }
+    
+        });
+    
+    });
 
 module.exports=router

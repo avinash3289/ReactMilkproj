@@ -40,6 +40,9 @@ export async function milkpostdata(data){
 export async function getmilk(id){
     return await axios.get("http://localhost:5000/getmilk/"+id)
 }
+export async function getmilkinfo(id){
+    return await axios.get("http://localhost:5000/milkinfo/"+id)
+}
 export async function insertrate(data){
     return await axios.post("http://localhost:5000/ratecharts",data,{
         headers:{
@@ -64,6 +67,17 @@ export async function payments(id,data){
         }
     })
 }
+export async function photo(data){
+    console.log(data)
+    return await axios.post("http://localhost:5000/upload",data,{
+        headers:{
+            "Content-Type":"multipart/form-data"
+        }
+    })
+}
+export async function getImages(){
+    return await axios.get("http://localhost:5000/getImages")
+}
 export async function getpayment(id){
     return await axios.get("http://localhost:5000/getpay/"+id)  
 }
@@ -72,4 +86,17 @@ export async function getprofile(id){
 }
 export async function updateprofile(id,data){
      return await axios.put("http://localhost:5000/adminprofile/"+id,data)
+}
+
+export async function sellerview(data){
+     return await axios.post('http://localhost:5000/seller',data)
+}
+export async function getall(id){
+    return await axios.get("http://localhost:5000/getall/"+id)
+}
+export async function getsellerinfo(id){
+    return await axios.get("http://localhost:5000/getsellerprof/"+id);
+}
+export async function updateseller(data){
+     return await axios.put("http://localhost:5000/updateseller/"+data)
 }

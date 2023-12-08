@@ -1,9 +1,10 @@
-const mysql=require('mysql');
-const conn=mysql.createConnection({
+const mysql1=require('mysql');
+const conn=mysql1.createConnection({
     user:'root',
     password:'',
     host:'localhost',
-    database:'react'
+    database:'test',
+    port:3306
 })
 conn.connect(err=>{
     if(err){
